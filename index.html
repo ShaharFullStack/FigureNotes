@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הפסנתר שלי</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Rubik+Maze&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <section>
+        <h1>הפסנתר שלי</h1>
+        <div class="chart" id="graph" data-percent="88">
+            <button id="waveforms" class="waveform" data-wave="sine">עדין</button>
+            <button id="waveforms" class="waveform" data-wave="triangle">רך</button>
+            <button id="waveforms" class="waveform" data-wave="square">מוביל 1</button>
+            <button id="waveforms" class="waveform" data-wave="sawtooth">מוביל 2</button>
+            <label for="reverb">עוצמה:</label>
+            <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
+
+            <label for="delay">הד:</label>
+            <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
+
+            <label for="volume">דיליי:</label>
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" >
+        </div>
+    </section>
+    <main>
+        <div id="circle" class="note-buttons circle">
+            <button class="note C square octave-1">C</button>
+            <button class="note D square octave-1">D</button>
+            <button class="note E square octave-1">E</button>
+            <button class="note F square octave-1">F</button>
+            <button class="note G square octave-1">G</button>
+            <button class="note A square octave-1">A</button>
+            <button class="note B square octave-1">B</button>
+            <button class="note C circle octave-2">C</button>
+            <button class="note D circle octave-2">D</button>
+            <button class="note E circle octave-2">E</button>
+            <button class="note F circle octave-2">F</button>
+            <button class="note G circle octave-2">G</button>
+            <button class="note A circle octave-2">A</button>
+            <button class="note B circle octave-2">B</button>
+            <button class="note triangle octave-3 C">C
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:red;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 D">D
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:brown;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 E">E
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:grey;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 F">F
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:blue;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 G">G
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:black;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 A">A
+                <svg height="50" width="50">
+                    <polygon points="25, 0, 50,50 0,50" style="fill:yellow;" />
+                </svg>
+            </button>
+            <button class="note triangle octave-3 B">B
+                <svg height="50" width="50">
+                    <polygon points="25,0 50,50 0,50" style="fill:green;" />
+                </svg>
+            </button>
+        </div>
+
+    </main>
+    <script src="main.js"></script>
+</body>
+
+</html>

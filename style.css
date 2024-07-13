@@ -1,0 +1,222 @@
+body {
+    background-image: linear-gradient(purple, teal, grey);
+    height: 720px;
+}
+
+section {
+    padding: 0;
+    height: 100px;
+}
+main {
+    background-image: url(assets/project2.jpg);
+    font-family: "Karantina", system-ui;
+    font-family: "Karantina", system-ui;
+    font-weight: 100;
+    font-style: normal;
+    background-repeat: no-repeat;
+    background-size: 1400px 500px;
+    width: 1400px;
+    border: solid;
+    border-color: lightseagreen;
+    height: 490px;
+    margin-left: 20px;
+    margin-top: 100px;
+
+
+}
+.karantina-light {
+    font-family: "Karantina", system-ui;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .karantina-regular {
+    font-family: "Karantina", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .karantina-bold {
+    font-family: "Karantina", system-ui;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  .rubik-maze-regular {
+    font-family: "Rubik Maze", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+.chart {
+    margin-top: 10px;
+}
+  
+h1 {
+    font-family: "Rubik Maze", system-ui;
+    font-weight: 100;
+    text-align: center;
+    font-size: 110px;
+    color: beige;
+    text-shadow: 10px 10px 0 grey, 0 10px 10px blue;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.note-buttons {
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.note {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    background-color: rgb(27, 53, 159);
+    /* Default color to be overridden */
+}
+
+.circle {
+    margin-left: 10px;
+    border-radius: 50%;
+}
+
+.square {
+    margin-left: 10.3px;
+}
+
+.triangle {
+    background: none;
+    margin-left: 9.9px;
+    border: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.triangle svg {
+
+    display: block;
+    margin: auto;
+    background-color: white;
+}
+
+.C {
+    background-color: red;
+    color: transparent;
+
+}
+
+.D {
+    background-color: brown;
+    color: transparent;
+
+}
+
+.E {
+    background-color: grey;
+    color: transparent;
+}
+
+.F {
+    background-color: blue;
+    color: transparent;
+}
+
+.G {
+    background-color: black;
+    color: transparent;
+}
+
+.A {
+    background-color: yellow;
+    color: transparent;
+}
+
+.B {
+    background-color: green;
+    color: transparent;
+}
+
+.C polygon {
+    fill: red;
+}
+
+.D polygon {
+    fill: brown;
+}
+
+.E polygon {
+    fill: grey;
+}
+
+.F polygon {
+    fill: blue;
+}
+
+.G polygon {
+    fill: green;
+}
+
+.A polygon {
+    fill: yellow;
+}
+
+.B polygon {
+    fill: violet;
+}
+
+.octave-1 {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.octave-2 {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+}
+
+#circle {
+    margin-left: 15px;
+    margin-top: 320px;
+}
+
+.waveform {
+    font-family: "Karantina", system-ui;
+    font-weight: 100;
+    font-style: normal;
+    display: inline-block;
+    width: 120px;
+    height: 50px;
+    margin-left: 55px;
+    margin-top: 1px;
+    border: 2px solid black;
+    text-align: center;
+    line-height: 5px;
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    background-color: rgb(28, 140, 125);
+    /* Default color to be overridden */
+}
+
+.waveform:hover {
+    background-color: rgb(233, 19, 19);
+    border-radius: 10px 10px 10px 10px;
+    font-family: "Karantina", system-ui;
+    font-weight: 100;
+    font-style: normal;
+}
