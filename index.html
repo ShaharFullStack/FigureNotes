@@ -1,92 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הפסנתר שלי</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Rubik+Maze&display=swap" rel="stylesheet">
+    <title>הפסנתר שלי - ThreeJS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Rubik+Maze&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎹</text></svg>">
 </head>
-
 <body>
-    <section>
-        <h1>הפסנתר שלי</h1>
-        <div class="chart" id="graph" data-percent="88">
-            <button id="waveforms" class="waveform" data-wave="sine">עדין</button>
-            <button id="waveforms" class="waveform" data-wave="triangle">רך</button>
-            <button id="waveforms" class="waveform" data-wave="square">מוביל 1</button>
-            <button id="waveforms" class="waveform" data-wave="sawtooth">מוביל 2</button>
-            <label for="reverb">עוצמה:</label>
-            <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
-
-            <label for="delay">הד:</label>
-            <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
-
-            <label for="volume">דיליי:</label>
-            <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5" >
+    <div class="background-effects"></div>
+    
+    <h1>הפסנתר שלי <span class="version">גרסה 3.0</span></h1>
+    
+    <!-- Toggle Controls Button -->
+    <button class="toggle-controls">
+        <i class="fas fa-chevron-left"></i>
+        <span>הגדרות</span>
+    </button>
+    
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="sounds">צלילים</button>
+            <button class="tab-btn" data-tab="effects">אפקטים</button>
+            <button class="tab-btn" data-tab="visual">ויזואלי</button>
         </div>
-    </section>
-    <main>
-        <div id="circle" class="note-buttons circle">
-            <button class="note C square octave-1">C</button>
-            <button class="note D square octave-1">D</button>
-            <button class="note E square octave-1">E</button>
-            <button class="note F square octave-1">F</button>
-            <button class="note G square octave-1">G</button>
-            <button class="note A square octave-1">A</button>
-            <button class="note B square octave-1">B</button>
-            <button class="note C circle octave-2">C</button>
-            <button class="note D circle octave-2">D</button>
-            <button class="note E circle octave-2">E</button>
-            <button class="note F circle octave-2">F</button>
-            <button class="note G circle octave-2">G</button>
-            <button class="note A circle octave-2">A</button>
-            <button class="note B circle octave-2">B</button>
-            <button class="note triangle octave-3 C">C
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:red;" />
-                </svg>
+        
+        <!-- Sounds Tab -->
+        <div id="sounds-tab" class="tab-content active">
+            <h2>צלילים</h2>
+            <div class="control-group">
+                <h3>צלילי פסנתר</h3>
+                <div class="button-group">
+                    <button class="sound-bank active" data-bank="synth">
+                        <i class="fas fa-wave-square"></i>
+                        סינתיסייזר
+                    </button>
+                    <button class="sound-bank" data-bank="piano">
+                        <i class="fas fa-music"></i>
+                        פסנתר
+                    </button>
+                    <button class="sound-bank" data-bank="marimba">
+                        <i class="fas fa-drum"></i>
+                        מרימבה
+                    </button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>צורת גל</h3>
+                <div class="button-group">
+                    <button class="waveform active" data-wave="sine">
+                        <i class="fas fa-wave-square"></i>
+                        סינוס
+                    </button>
+                    <button class="waveform" data-wave="triangle">
+                        <i class="fas fa-signal"></i>
+                        משולש
+                    </button>
+                    <button class="waveform" data-wave="square">
+                        <i class="fas fa-grip-lines"></i>
+                        ריבוע
+                    </button>
+                    <button class="waveform" data-wave="sawtooth">
+                        <i class="fas fa-chevron-up"></i>
+                        מסור
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Effects Tab -->
+        <div id="effects-tab" class="tab-content">
+            <h2>אפקטים</h2>
+            <div class="control-group">
+                <label>
+                    עוצמה
+                    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+                    <span>50%</span>
+                </label>
+                
+                <label>
+                    התקפה
+                    <input type="range" id="attack" min="0.001" max="1" step="0.001" value="0.01">
+                    <span>10ms</span>
+                </label>
+                
+                <label>
+                    שחרור
+                    <input type="range" id="release" min="0.001" max="1" step="0.001" value="0.1">
+                    <span>100ms</span>
+                </label>
+                
+                <label>
+                    הדהוד
+                    <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
+                    <span>0%</span>
+                </label>
+                
+                <label>
+                    השהייה
+                    <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
+                    <span>0%</span>
+                </label>
+                
+                <label>
+                    עיוות
+                    <input type="range" id="distortion" min="0" max="1" step="0.01" value="0">
+                    <span>0%</span>
+                </label>
+                
+                <label>
+                    סינון
+                    <input type="range" id="filter" min="0" max="1" step="0.01" value="1">
+                    <span>100%</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Visual Tab -->
+        <div id="visual-tab" class="tab-content">
+            <h2>ויזואלי</h2>
+            <div class="control-group">
+                <h3>ערכת נושא</h3>
+                <div class="button-group">
+                    <button class="theme-btn active" id="theme-default">
+                        <i class="fas fa-paint-brush"></i>
+                        ברירת מחדל
+                    </button>
+                    <button class="theme-btn" id="theme-neon">
+                        <i class="fas fa-lightbulb"></i>
+                        ניאון
+                    </button>
+                    <button class="theme-btn" id="theme-classic">
+                        <i class="fas fa-music"></i>
+                        קלאסי
+                    </button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>אפקטים ויזואליים</h3>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" id="particles" checked>
+                        חלקיקים
+                    </label>
+                    <label>
+                        <input type="checkbox" id="animated-background" checked>
+                        רקע מונפש
+                    </label>
+                    <label>
+                        <input type="checkbox" id="note-trails">
+                        שובלי צלילים
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Help and Fullscreen -->
+        <div class="control-group">
+            <button id="help-btn" class="help-btn">
+                <i class="fas fa-question-circle"></i>
+                עזרה
             </button>
-            <button class="note triangle octave-3 D">D
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:brown;" />
-                </svg>
+            <button id="fullscreen-btn" class="fullscreen-btn">
+                <i class="fas fa-expand"></i>
+                מסך מלא
             </button>
-            <button class="note triangle octave-3 E">E
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:grey;" />
-                </svg>
-            </button>
-            <button class="note triangle octave-3 F">F
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:blue;" />
-                </svg>
-            </button>
-            <button class="note triangle octave-3 G">G
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:black;" />
-                </svg>
-            </button>
-            <button class="note triangle octave-3 A">A
-                <svg height="50" width="50">
-                    <polygon points="25, 0, 50,50 0,50" style="fill:yellow;" />
-                </svg>
-            </button>
-            <button class="note triangle octave-3 B">B
-                <svg height="50" width="50">
-                    <polygon points="25,0 50,50 0,50" style="fill:green;" />
-                </svg>
+            <button id="record-btn" class="record-btn">
+                <i class="fas fa-record-vinyl"></i>
+                הקלטה
             </button>
         </div>
-
-    </main>
-    <script src="main.js"></script>
+    </div>
+    
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>עזרה</h2>
+            <div class="help-content">
+                <h3>איך להשתמש בפסנתר:</h3>
+                <ul>
+                    <li>לחץ על הקלידים כדי לנגן צלילים</li>
+                    <li>השתמש בעכבר או במסך מגע</li>
+                    <li>נסה את הצלילים השונים: סינתיסייזר, פסנתר ומרימבה</li>
+                    <li>הוסף אפקטים כמו הדהוד והשהייה</li>
+                    <li>שנה את העיצוב עם ערכות הנושא השונות</li>
+                </ul>
+                
+                <h3>קיצורי מקלדת:</h3>
+                <ul>
+                    <li>F - מסך מלא</li>
+                    <li>H - פתח/סגור עזרה</li>
+                    <li>1-4 - החלף צליל</li>
+                    <li>Q-P - נגן צלילים</li>
+                </ul>
+                
+                <h3>טיפים:</h3>
+                <ul>
+                    <li>נסה לשלב אפקטים שונים</li>
+                    <li>השתמש באפקטים ויזואליים להעצמת החוויה</li>
+                    <li>שנה את עוצמת הצליל לפי הצורך</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Canvas Container -->
+    <div id="canvas-container"></div>
+    
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="script.js"></script>
 </body>
-
 </html>
