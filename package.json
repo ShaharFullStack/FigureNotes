@@ -1,0 +1,26 @@
+{
+  "name": "threejs-figurenotes",
+  "version": "1.0.0",
+  "description": "Interactive 3D piano keyboard using Three.js",
+  "main": "script.js",
+  "scripts": {
+    "start": "serve .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "threejs",
+    "piano",
+    "keyboard",
+    "music",
+    "interactive"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.162.0",
+    "howler": "^2.2.4"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+} 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הפסנתר שלי - ThreeJS</title>
+    <title>3D Piano - ThreeJS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&family=Rubik+Maze&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
 <body>
     <div class="background-effects"></div>
     
-    <h1>הפסנתר שלי <span class="version">גרסה 3.0</span></h1>
+    <h1>3D Piano <span class="version">Verdion 3.0</span></h1>
     
     <!-- Toggle Controls Button -->
     <button class="toggle-controls">
@@ -24,192 +24,118 @@
     
     <!-- Controls Panel -->
     <div class="controls-panel">
-        <!-- Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" data-tab="sounds">צלילים</button>
-            <button class="tab-btn" data-tab="effects">אפקטים</button>
-            <button class="tab-btn" data-tab="visual">ויזואלי</button>
+            <button class="tab-btn active" data-tab="sound" data-translate="sound">Sound</button>
+            <button class="tab-btn" data-tab="visual" data-translate="visual">Visual</button>
+            <button class="tab-btn" data-tab="help" data-translate="help">Help</button>
         </div>
         
-        <!-- Sounds Tab -->
-        <div id="sounds-tab" class="tab-content active">
-            <h2>צלילים</h2>
+        <div class="tab-content active" id="sound">
             <div class="control-group">
-                <h3>צלילי פסנתר</h3>
+                <label data-translate="soundBank">Sound Bank</label>
                 <div class="button-group">
-                    <button class="sound-bank active" data-bank="synth">
-                        <i class="fas fa-wave-square"></i>
-                        סינתיסייזר
-                    </button>
-                    <button class="sound-bank" data-bank="piano">
-                        <i class="fas fa-music"></i>
-                        פסנתר
-                    </button>
-                    <button class="sound-bank" data-bank="marimba">
-                        <i class="fas fa-drum"></i>
-                        מרימבה
-                    </button>
+                    <button class="sound-bank-btn active" data-bank="synth" data-translate="synth">Synth</button>
+                    <button class="sound-bank-btn" data-bank="piano" data-translate="piano">Piano</button>
+                    <button class="sound-bank-btn" data-bank="marimba" data-translate="marimba">Marimba</button>
                 </div>
             </div>
             
             <div class="control-group">
-                <h3>צורת גל</h3>
+                <label data-translate="waveform">Waveform</label>
                 <div class="button-group">
-                    <button class="waveform active" data-wave="sine">
-                        <i class="fas fa-wave-square"></i>
-                        סינוס
-                    </button>
-                    <button class="waveform" data-wave="triangle">
-                        <i class="fas fa-signal"></i>
-                        משולש
-                    </button>
-                    <button class="waveform" data-wave="square">
-                        <i class="fas fa-grip-lines"></i>
-                        ריבוע
-                    </button>
-                    <button class="waveform" data-wave="sawtooth">
-                        <i class="fas fa-chevron-up"></i>
-                        מסור
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Effects Tab -->
-        <div id="effects-tab" class="tab-content">
-            <h2>אפקטים</h2>
-            <div class="control-group">
-                <label>
-                    עוצמה
-                    <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
-                    <span>50%</span>
-                </label>
-                
-                <label>
-                    התקפה
-                    <input type="range" id="attack" min="0.001" max="1" step="0.001" value="0.01">
-                    <span>10ms</span>
-                </label>
-                
-                <label>
-                    שחרור
-                    <input type="range" id="release" min="0.001" max="1" step="0.001" value="0.1">
-                    <span>100ms</span>
-                </label>
-                
-                <label>
-                    הדהוד
-                    <input type="range" id="reverb" min="0" max="1" step="0.01" value="0">
-                    <span>0%</span>
-                </label>
-                
-                <label>
-                    השהייה
-                    <input type="range" id="delay" min="0" max="1" step="0.01" value="0">
-                    <span>0%</span>
-                </label>
-                
-                <label>
-                    עיוות
-                    <input type="range" id="distortion" min="0" max="1" step="0.01" value="0">
-                    <span>0%</span>
-                </label>
-                
-                <label>
-                    סינון
-                    <input type="range" id="filter" min="0" max="1" step="0.01" value="1">
-                    <span>100%</span>
-                </label>
-            </div>
-        </div>
-        
-        <!-- Visual Tab -->
-        <div id="visual-tab" class="tab-content">
-            <h2>ויזואלי</h2>
-            <div class="control-group">
-                <h3>ערכת נושא</h3>
-                <div class="button-group">
-                    <button class="theme-btn active" id="theme-default">
-                        <i class="fas fa-paint-brush"></i>
-                        ברירת מחדל
-                    </button>
-                    <button class="theme-btn" id="theme-neon">
-                        <i class="fas fa-lightbulb"></i>
-                        ניאון
-                    </button>
-                    <button class="theme-btn" id="theme-classic">
-                        <i class="fas fa-music"></i>
-                        קלאסי
-                    </button>
+                    <button class="waveform-btn active" data-waveform="sine" data-translate="sine">Sine</button>
+                    <button class="waveform-btn" data-waveform="square" data-translate="square">Square</button>
+                    <button class="waveform-btn" data-waveform="triangle" data-translate="triangle">Triangle</button>
+                    <button class="waveform-btn" data-waveform="sawtooth" data-translate="sawtooth">Sawtooth</button>
                 </div>
             </div>
             
             <div class="control-group">
-                <h3>אפקטים ויזואליים</h3>
-                <div class="checkbox-group">
-                    <label>
-                        <input type="checkbox" id="particles" checked>
-                        חלקיקים
-                    </label>
-                    <label>
-                        <input type="checkbox" id="animated-background" checked>
-                        רקע מונפש
-                    </label>
-                    <label>
-                        <input type="checkbox" id="note-trails">
-                        שובלי צלילים
-                    </label>
-                </div>
+                <label data-translate="volume">Volume</label>
+                <input type="range" class="slider" id="volume" min="0" max="100" value="50">
+                <span class="value-display">50%</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="attack">Attack</label>
+                <input type="range" class="slider" id="attack" min="0" max="100" value="0">
+                <span class="value-display">0ms</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="release">Release</label>
+                <input type="range" class="slider" id="release" min="0" max="100" value="0">
+                <span class="value-display">0ms</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="reverb">Reverb</label>
+                <input type="range" class="slider" id="reverb" min="0" max="100" value="0">
+                <span class="value-display">0%</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="delay">Delay</label>
+                <input type="range" class="slider" id="delay" min="0" max="100" value="0">
+                <span class="value-display">0%</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="distortion">Distortion</label>
+                <input type="range" class="slider" id="distortion" min="0" max="100" value="0">
+                <span class="value-display">0%</span>
+            </div>
+            
+            <div class="control-group">
+                <label data-translate="filter">Filter</label>
+                <input type="range" class="slider" id="filter" min="0" max="100" value="0">
+                <span class="value-display">0%</span>
             </div>
         </div>
         
-        <!-- Help and Fullscreen -->
-        <div class="control-group">
-            <button id="help-btn" class="help-btn">
-                <i class="fas fa-question-circle"></i>
-                עזרה
-            </button>
-            <button id="fullscreen-btn" class="fullscreen-btn">
-                <i class="fas fa-expand"></i>
-                מסך מלא
-            </button>
-            <button id="record-btn" class="record-btn">
-                <i class="fas fa-record-vinyl"></i>
-                הקלטה
-            </button>
-        </div>
-    </div>
-    
-    <!-- Help Modal -->
-    <div id="help-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>עזרה</h2>
-            <div class="help-content">
-                <h3>איך להשתמש בפסנתר:</h3>
-                <ul>
-                    <li>לחץ על הקלידים כדי לנגן צלילים</li>
-                    <li>השתמש בעכבר או במסך מגע</li>
-                    <li>נסה את הצלילים השונים: סינתיסייזר, פסנתר ומרימבה</li>
-                    <li>הוסף אפקטים כמו הדהוד והשהייה</li>
-                    <li>שנה את העיצוב עם ערכות הנושא השונות</li>
-                </ul>
-                
-                <h3>קיצורי מקלדת:</h3>
-                <ul>
-                    <li>F - מסך מלא</li>
-                    <li>H - פתח/סגור עזרה</li>
-                    <li>1-4 - החלף צליל</li>
-                    <li>Q-P - נגן צלילים</li>
-                </ul>
-                
-                <h3>טיפים:</h3>
-                <ul>
-                    <li>נסה לשלב אפקטים שונים</li>
-                    <li>השתמש באפקטים ויזואליים להעצמת החוויה</li>
-                    <li>שנה את עוצמת הצליל לפי הצורך</li>
-                </ul>
+        <div class="tab-content" id="visual">
+            <div class="control-group">
+                <label data-translate="theme">Theme</label>
+                <div class="button-group">
+                    <button class="theme-btn active" data-theme="default" data-translate="default">Default</button>
+                    <button class="theme-btn" data-theme="neon" data-translate="neon">Neon</button>
+                    <button class="theme-btn" data-theme="classic" data-translate="classic">Classic</button>
+                </div>
             </div>
+            
+            <div class="control-group">
+                <label data-translate="language">Language</label>
+                <div class="button-group">
+                    <button class="lang-btn active" data-lang="en">English</button>
+                    <button class="lang-btn" data-lang="he">עברית</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="particles" checked>
+                    <span data-translate="particles">Particles</span>
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="animatedBackground" checked>
+                    <span data-translate="animatedBackground">Animated Background</span>
+                </label>
+            </div>
+            
+            <div class="control-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="noteTrails" checked>
+                    <span data-translate="noteTrails">Note Trails</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="help">
+            <h2 data-translate="helpTitle">How to Play</h2>
+            <p data-translate="helpContent">Click on the piano keys to play notes. Hold Shift to sustain notes. Use the side menu to adjust sound and visual settings.</p>
         </div>
     </div>
     

@@ -116,6 +116,106 @@ let lastMouseX = 0;
 let lastMouseY = 0;
 let baseFrequencies = {}; // Store base frequencies for active notes
 
+// Language dictionary
+const translations = {
+    en: {
+        settings: "Settings",
+        sound: "Sound",
+        visual: "Visual",
+        help: "Help",
+        soundBank: "Sound Bank",
+        waveform: "Waveform",
+        theme: "Theme",
+        volume: "Volume",
+        attack: "Attack",
+        release: "Release",
+        reverb: "Reverb",
+        delay: "Delay",
+        distortion: "Distortion",
+        filter: "Filter",
+        particles: "Particles",
+        animatedBackground: "Animated Background",
+        noteTrails: "Note Trails",
+        default: "Default",
+        neon: "Neon",
+        classic: "Classic",
+        helpTitle: "How to Play",
+        helpContent: "Click on the piano keys to play notes. Hold Shift to sustain notes. Use the side menu to adjust sound and visual settings.",
+        record: "Record",
+        stopRecord: "Stop Recording",
+        fullscreen: "Fullscreen",
+        language: "Language"
+    },
+    he: {
+        settings: "הגדרות",
+        sound: "סאונד",
+        visual: "ויזואל",
+        help: "עזרה",
+        soundBank: "בנק צלילים",
+        waveform: "צורת גל",
+        theme: "ערכת נושא",
+        volume: "עוצמה",
+        attack: "התקפה",
+        release: "שחרור",
+        reverb: "ריוורב",
+        delay: "דיליי",
+        distortion: "דיסטורשן",
+        filter: "פילטר",
+        particles: "חלקיקים",
+        animatedBackground: "רקע מונפש",
+        noteTrails: "שובלי צלילים",
+        default: "ברירת מחדל",
+        neon: "ניאון",
+        classic: "קלאסי",
+        helpTitle: "איך לנגן",
+        helpContent: "לחץ על מקשי הפסנתר כדי לנגן צלילים. החזק Shift כדי להחזיק צלילים. השתמש בתפריט הצד כדי לשנות הגדרות סאונד וויזואליזציה.",
+        record: "הקלטה",
+        stopRecord: "עצור הקלטה",
+        fullscreen: "מסך מלא",
+        language: "שפה"
+    }
+};
+
+// Current language
+let currentLang = 'en';
+
+// Function to update UI language
+function updateUILanguage() {
+    // Update all text elements with data-translate attribute
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[currentLang][key]) {
+            element.textContent = translations[currentLang][key];
+        }
+    });
+    
+    // Update RTL/LTR direction
+    document.body.dir = currentLang === 'he' ? 'rtl' : 'ltr';
+    
+    // Update controls panel direction
+    const controlsPanel = document.querySelector('.controls-panel');
+    if (controlsPanel) {
+        controlsPanel.style.direction = currentLang === 'he' ? 'rtl' : 'ltr';
+    }
+}
+
+// Add language switching functionality
+document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+        // Update language
+        currentLang = btn.getAttribute('data-lang');
+        // Update UI
+        updateUILanguage();
+    });
+});
+
+// Initialize UI language
+updateUILanguage();
+
 // Initialize everything when the window loads
 window.addEventListener('load', init);
 
@@ -917,15 +1017,15 @@ function stopNote(note, octave) {
             soundSamples[key].stop(activeOscillators[key].soundId);
             delete activeOscillators[key];
         } else {
-            // Apply release curve
+        // Apply release curve
             activeOscillators[key].gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
-            
-            // Stop the oscillator after the release
-            setTimeout(() => {
-                if (activeOscillators[key]) {
-                    activeOscillators[key].oscillator.stop();
-                    delete activeOscillators[key];
-                }
+        
+        // Stop the oscillator after the release
+        setTimeout(() => {
+            if (activeOscillators[key]) {
+                activeOscillators[key].oscillator.stop();
+                delete activeOscillators[key];
+            }
             }, releaseTime * 1000);
         }
         
@@ -944,7 +1044,7 @@ function highlightNote(note, octave, isPlaying) {
         
         // Handle different material types
         if (noteShape.material instanceof THREE.MeshPhongMaterial) {
-            noteShape.material.emissiveIntensity = isPlaying ? 0.5 : 0;
+        noteShape.material.emissiveIntensity = isPlaying ? 0.5 : 0;
         } else if (noteShape.material instanceof THREE.LineBasicMaterial) {
             noteShape.material.opacity = isPlaying ? 1 : 0.5;
         } else if (noteShape.type === 'Group') {
@@ -967,179 +1067,222 @@ function setupUI() {
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Deactivate all tabs
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Activate selected tab
-            button.classList.add('active');
-            const tabId = button.getAttribute('data-tab') + '-tab';
-            document.getElementById(tabId).classList.add('active');
+    if (tabButtons.length > 0 && tabContents.length > 0) {
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Deactivate all tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Activate selected tab
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                const targetContent = document.getElementById(tabId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
         });
-    });
+    }
     
     // Waveform selection
-    document.querySelectorAll('.waveform').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.waveform').forEach(btn => {
-                btn.classList.remove('active');
+    const waveformButtons = document.querySelectorAll('.waveform-btn');
+    if (waveformButtons.length > 0) {
+        waveformButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                waveformButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                selectedWaveform = button.getAttribute('data-waveform');
             });
-            button.classList.add('active');
-            selectedWaveform = button.getAttribute('data-wave');
         });
-    });
+    }
     
     // Sound bank selection
-    document.querySelectorAll('.sound-bank').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.sound-bank').forEach(btn => {
-                btn.classList.remove('active');
+    const soundBankButtons = document.querySelectorAll('.sound-bank-btn');
+    if (soundBankButtons.length > 0) {
+        soundBankButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                soundBankButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                soundBank = button.getAttribute('data-bank');
+                
+                // Load samples if we switched to a sample-based bank
+                if (soundBank !== 'synth' && Object.keys(soundSamples).length === 0) {
+                    loadSoundSamples();
+                }
             });
-            button.classList.add('active');
-            soundBank = button.getAttribute('data-bank');
-            
-            // Load samples if we switched to a sample-based bank
-            if (soundBank !== 'synth' && Object.keys(soundSamples).length === 0) {
-                loadSoundSamples();
-            }
         });
-    });
+    }
     
     // Volume control
     const volumeSlider = document.getElementById('volume');
-    const volumeDisplay = volumeSlider.nextElementSibling;
-    volumeSlider.addEventListener('input', (event) => {
-        const value = event.target.value;
-        masterGainNode.gain.value = value;
-        volumeDisplay.textContent = Math.round(value * 100) + '%';
-    });
+    if (volumeSlider) {
+        const volumeDisplay = volumeSlider.nextElementSibling;
+        volumeSlider.addEventListener('input', (event) => {
+            const value = event.target.value;
+            masterGainNode.gain.value = value;
+            if (volumeDisplay) {
+                volumeDisplay.textContent = Math.round(value * 100) + '%';
+            }
+        });
+    }
     
     // Attack control
     const attackSlider = document.getElementById('attack');
-    const attackDisplay = attackSlider.nextElementSibling;
-    attackSlider.addEventListener('input', (event) => {
-        attackTime = parseFloat(event.target.value);
-        attackDisplay.textContent = Math.round(attackTime * 1000) + 'ms';
-    });
+    if (attackSlider) {
+        const attackDisplay = attackSlider.nextElementSibling;
+        attackSlider.addEventListener('input', (event) => {
+            attackTime = parseFloat(event.target.value);
+            if (attackDisplay) {
+                attackDisplay.textContent = Math.round(attackTime * 1000) + 'ms';
+            }
+        });
+    }
     
     // Release control
     const releaseSlider = document.getElementById('release');
-    const releaseDisplay = releaseSlider.nextElementSibling;
-    releaseSlider.addEventListener('input', (event) => {
-        releaseTime = parseFloat(event.target.value);
-        releaseDisplay.textContent = Math.round(releaseTime * 1000) + 'ms';
-    });
+    if (releaseSlider) {
+        const releaseDisplay = releaseSlider.nextElementSibling;
+        releaseSlider.addEventListener('input', (event) => {
+            releaseTime = parseFloat(event.target.value);
+            if (releaseDisplay) {
+                releaseDisplay.textContent = Math.round(releaseTime * 1000) + 'ms';
+            }
+        });
+    }
     
     // Reverb control
     const reverbSlider = document.getElementById('reverb');
-    const reverbDisplay = reverbSlider.nextElementSibling;
-    reverbSlider.addEventListener('input', (event) => {
-        const value = event.target.value;
-        reverbGainNode.gain.value = value;
-        reverbDisplay.textContent = Math.round(value * 100) + '%';
-    });
+    if (reverbSlider) {
+        const reverbDisplay = reverbSlider.nextElementSibling;
+        reverbSlider.addEventListener('input', (event) => {
+            const value = event.target.value;
+            reverbGainNode.gain.value = value;
+            if (reverbDisplay) {
+                reverbDisplay.textContent = Math.round(value * 100) + '%';
+            }
+        });
+    }
     
     // Delay control
     const delaySlider = document.getElementById('delay');
-    const delayDisplay = delaySlider.nextElementSibling;
-    delaySlider.addEventListener('input', (event) => {
-        const value = parseFloat(event.target.value);
-        delayNode.delayTime.value = value * 0.5; // Max 500ms delay
-        delayDisplay.textContent = Math.round(value * 100) + '%';
-    });
+    if (delaySlider) {
+        const delayDisplay = delaySlider.nextElementSibling;
+        delaySlider.addEventListener('input', (event) => {
+            const value = parseFloat(event.target.value);
+            delayNode.delayTime.value = value * 0.5; // Max 500ms delay
+            if (delayDisplay) {
+                delayDisplay.textContent = Math.round(value * 100) + '%';
+            }
+        });
+    }
     
     // Distortion control
     const distortionSlider = document.getElementById('distortion');
-    const distortionDisplay = distortionSlider.nextElementSibling;
-    distortionSlider.addEventListener('input', (event) => {
-        const value = parseFloat(event.target.value);
-        distortionNode.curve = makeDistortionCurve(value * 400);
-        distortionDisplay.textContent = Math.round(value * 100) + '%';
-    });
+    if (distortionSlider) {
+        const distortionDisplay = distortionSlider.nextElementSibling;
+        distortionSlider.addEventListener('input', (event) => {
+            const value = parseFloat(event.target.value);
+            distortionNode.curve = makeDistortionCurve(value * 400);
+            if (distortionDisplay) {
+                distortionDisplay.textContent = Math.round(value * 100) + '%';
+            }
+        });
+    }
     
     // Filter control
     const filterSlider = document.getElementById('filter');
-    const filterDisplay = filterSlider.nextElementSibling;
-    filterSlider.addEventListener('input', (event) => {
-        const value = parseFloat(event.target.value);
-        // Map 0-1 to frequency range 200Hz to 20kHz logarithmically
-        filterNode.frequency.value = 200 * Math.pow(100, value);
-        filterDisplay.textContent = Math.round(value * 100) + '%';
-    });
+    if (filterSlider) {
+        const filterDisplay = filterSlider.nextElementSibling;
+        filterSlider.addEventListener('input', (event) => {
+            const value = parseFloat(event.target.value);
+            filterNode.frequency.value = 200 * Math.pow(100, value);
+            if (filterDisplay) {
+                filterDisplay.textContent = Math.round(value * 100) + '%';
+            }
+        });
+    }
     
     // Theme buttons
-    document.querySelectorAll('.theme-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.theme-btn').forEach(btn => {
-                btn.classList.remove('active');
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    if (themeButtons.length > 0) {
+        themeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                themeColor = button.getAttribute('data-theme');
+                applyTheme(themeColor);
             });
-            button.classList.add('active');
-            themeColor = button.id.replace('theme-', '');
-            applyTheme(themeColor);
         });
-    });
+    }
     
     // Visual checkboxes
-    document.getElementById('particles').addEventListener('change', (event) => {
-        particlesEnabled = event.target.checked;
-        if (particleSystem) {
-            particleSystem.visible = particlesEnabled;
-        }
-    });
+    const particlesCheckbox = document.getElementById('particles');
+    if (particlesCheckbox) {
+        particlesCheckbox.addEventListener('change', (event) => {
+            particlesEnabled = event.target.checked;
+            if (particleSystem) {
+                particleSystem.visible = particlesEnabled;
+            }
+        });
+    }
     
-    document.getElementById('animated-background').addEventListener('change', (event) => {
-        animatedBackgroundEnabled = event.target.checked;
-        if (backgroundAnimation) {
-            backgroundAnimation.visible = animatedBackgroundEnabled;
-        }
-    });
+    const animatedBackgroundCheckbox = document.getElementById('animatedBackground');
+    if (animatedBackgroundCheckbox) {
+        animatedBackgroundCheckbox.addEventListener('change', (event) => {
+            animatedBackgroundEnabled = event.target.checked;
+            if (backgroundAnimation) {
+                backgroundAnimation.visible = animatedBackgroundEnabled;
+            }
+        });
+    }
     
-    document.getElementById('note-trails').addEventListener('change', (event) => {
-        noteTrailsEnabled = event.target.checked;
-    });
+    const noteTrailsCheckbox = document.getElementById('noteTrails');
+    if (noteTrailsCheckbox) {
+        noteTrailsCheckbox.addEventListener('change', (event) => {
+            noteTrailsEnabled = event.target.checked;
+        });
+    }
     
-    // Modal for help
-    const modal = document.getElementById('help-modal');
-    const helpBtn = document.getElementById('help-btn');
+    // Help Modal
+    const helpBtn = document.querySelector('.help-btn');
+    const helpModal = document.getElementById('help-modal');
     const closeBtn = document.querySelector('.close');
     
-    helpBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-    });
-    
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-    
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
+    if (helpBtn && helpModal && closeBtn) {
+        helpBtn.addEventListener('click', () => {
+            helpModal.style.display = 'block';
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            helpModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (event) => {
+            if (event.target === helpModal) {
+                helpModal.style.display = 'none';
+            }
+        });
+    }
     
     // Fullscreen button
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    fullscreenBtn.addEventListener('click', toggleFullScreen);
+    const fullscreenBtn = document.querySelector('.fullscreen-btn');
+    if (fullscreenBtn) {
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+    }
     
     // Record button
-    const recordBtn = document.getElementById('record-btn');
-    recordBtn.addEventListener('click', () => {
-        alert('יכולת הקלטה תהיה זמינה בגרסה הבאה!');
-    });
-}
-
-// Toggle fullscreen
-function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            alert(`שגיאה במעבר למסך מלא: ${err.message}`);
+    const recordBtn = document.querySelector('.record-btn');
+    if (recordBtn) {
+        recordBtn.addEventListener('click', () => {
+            alert('יכולת הקלטה תהיה זמינה בגרסה הבאה!');
         });
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
     }
 }
 
@@ -1343,7 +1486,7 @@ function animate() {
             // Remove dead particles
             if (particle.parent) {
                 particle.parent.remove(particle);
-            } else {
+    } else {
                 scene.remove(particle);
             }
             particles.splice(i, 1);
@@ -1393,190 +1536,215 @@ function animate() {
 // Controls Panel Functionality
 const toggleControls = document.querySelector('.toggle-controls');
 const controlsPanel = document.querySelector('.controls-panel');
+
+if (toggleControls && controlsPanel) {
+    // Toggle Controls Panel
+    toggleControls.addEventListener('click', () => {
+        controlsPanel.classList.toggle('active');
+        toggleControls.classList.toggle('active');
+        // הסתרת המילה "הגדרות" כאשר התפריט נפתח
+        const settingsText = toggleControls.querySelector('span');
+        if (settingsText) {
+            settingsText.style.display = controlsPanel.classList.contains('active') ? 'none' : 'inline';
+        }
+    });
+}
+
+// Tab Switching
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
-// Toggle Controls Panel
-toggleControls.addEventListener('click', () => {
-    controlsPanel.classList.toggle('active');
-    toggleControls.classList.toggle('active');
-    // הסתרת המילה "הגדרות" כאשר התפריט נפתח
-    const settingsText = toggleControls.querySelector('span');
-    if (settingsText) {
-        settingsText.style.display = controlsPanel.classList.contains('active') ? 'none' : 'inline';
-    }
-});
-
-// Tab Switching
-tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all buttons and contents
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabContents.forEach(c => c.classList.remove('active'));
-        
-        // Add active class to clicked button and corresponding content
-        btn.classList.add('active');
-        const tabId = btn.getAttribute('data-tab');
-        document.getElementById(`${tabId}-tab`).classList.add('active');
+if (tabBtns.length > 0 && tabContents.length > 0) {
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            btn.classList.add('active');
+            const tabId = btn.getAttribute('data-tab');
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
     });
-});
+}
 
 // Sound Bank Selection
-const soundBankBtns = document.querySelectorAll('.sound-bank');
-soundBankBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        soundBankBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const bank = btn.getAttribute('data-bank');
-        soundBank = bank;
-        loadSoundSamples();
+const soundBankBtns = document.querySelectorAll('.sound-bank-btn');
+if (soundBankBtns.length > 0) {
+    soundBankBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            soundBankBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const bank = btn.getAttribute('data-bank');
+            soundBank = bank;
+            loadSoundSamples();
+        });
     });
-});
+}
 
 // Waveform Selection
-const waveformBtns = document.querySelectorAll('.waveform');
-waveformBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        waveformBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const wave = btn.getAttribute('data-wave');
-        selectedWaveform = wave;
+const waveformBtns = document.querySelectorAll('.waveform-btn');
+if (waveformBtns.length > 0) {
+    waveformBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            waveformBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const wave = btn.getAttribute('data-waveform');
+            selectedWaveform = wave;
+        });
     });
-});
+}
 
 // Theme Selection
 const themeBtns = document.querySelectorAll('.theme-btn');
-themeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        themeBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const theme = btn.getAttribute('id').replace('theme-', '');
-        themeColor = theme;
-        updateTheme();
+if (themeBtns.length > 0) {
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            themeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const theme = btn.getAttribute('data-theme');
+            themeColor = theme;
+            updateTheme();
+        });
     });
-});
+}
 
 // Slider Controls
 const volumeSlider = document.getElementById('volume');
+if (volumeSlider) {
+    volumeSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        volumeSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
+        masterGainNode.gain.value = value;
+    });
+}
+
 const attackSlider = document.getElementById('attack');
+if (attackSlider) {
+    attackSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        attackSlider.nextElementSibling.textContent = `${Math.round(value * 1000)}ms`;
+        attackTime = value;
+    });
+}
+
 const releaseSlider = document.getElementById('release');
+if (releaseSlider) {
+    releaseSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        releaseSlider.nextElementSibling.textContent = `${Math.round(value * 1000)}ms`;
+        releaseTime = value;
+    });
+}
+
 const reverbSlider = document.getElementById('reverb');
+if (reverbSlider) {
+    reverbSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        reverbSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
+        reverbGainNode.gain.value = value;
+    });
+}
+
 const delaySlider = document.getElementById('delay');
+if (delaySlider) {
+    delaySlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        delaySlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
+        delayNode.delayTime.value = value * 0.5; // Max 500ms delay
+    });
+}
+
 const distortionSlider = document.getElementById('distortion');
+if (distortionSlider) {
+    distortionSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        distortionSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
+        distortionNode.curve = makeDistortionCurve(value * 400);
+    });
+}
+
 const filterSlider = document.getElementById('filter');
-
-volumeSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    volumeSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
-    masterGainNode.gain.value = value;
-});
-
-attackSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    attackSlider.nextElementSibling.textContent = `${Math.round(value * 1000)}ms`;
-    attackTime = value;
-});
-
-releaseSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    releaseSlider.nextElementSibling.textContent = `${Math.round(value * 1000)}ms`;
-    releaseTime = value;
-});
-
-reverbSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    reverbSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
-    reverbGainNode.gain.value = value;
-});
-
-delaySlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    delaySlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
-    delayNode.delayTime.value = value * 0.5; // Max 500ms delay
-});
-
-distortionSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    distortionSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
-    distortionNode.curve = makeDistortionCurve(value * 400);
-});
-
-filterSlider.addEventListener('input', (e) => {
-    const value = e.target.value;
-    filterSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
-    filterNode.frequency.value = 200 * Math.pow(100, value);
-});
+if (filterSlider) {
+    filterSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        filterSlider.nextElementSibling.textContent = `${Math.round(value * 100)}%`;
+        filterNode.frequency.value = 200 * Math.pow(100, value);
+    });
+}
 
 // Checkbox Controls
 const particlesCheckbox = document.getElementById('particles');
-const animatedBackgroundCheckbox = document.getElementById('animated-background');
-const noteTrailsCheckbox = document.getElementById('note-trails');
+if (particlesCheckbox) {
+    particlesCheckbox.addEventListener('change', (e) => {
+        particlesEnabled = e.target.checked;
+        if (particleSystem) {
+            particleSystem.visible = particlesEnabled;
+        }
+    });
+}
 
-particlesCheckbox.addEventListener('change', (e) => {
-    particlesEnabled = e.target.checked;
-    if (particleSystem) {
-        particleSystem.visible = particlesEnabled;
-    }
-});
+const animatedBackgroundCheckbox = document.getElementById('animatedBackground');
+if (animatedBackgroundCheckbox) {
+    animatedBackgroundCheckbox.addEventListener('change', (e) => {
+        animatedBackgroundEnabled = e.target.checked;
+        if (backgroundAnimation) {
+            backgroundAnimation.visible = animatedBackgroundEnabled;
+        }
+    });
+}
 
-animatedBackgroundCheckbox.addEventListener('change', (e) => {
-    animatedBackgroundEnabled = e.target.checked;
-    if (backgroundAnimation) {
-        backgroundAnimation.visible = animatedBackgroundEnabled;
-    }
-});
-
-noteTrailsCheckbox.addEventListener('change', (e) => {
-    noteTrailsEnabled = e.target.checked;
-});
+const noteTrailsCheckbox = document.getElementById('noteTrails');
+if (noteTrailsCheckbox) {
+    noteTrailsCheckbox.addEventListener('change', (e) => {
+        noteTrailsEnabled = e.target.checked;
+    });
+}
 
 // Help Modal
-const helpBtn = document.getElementById('help-btn');
+const helpBtn = document.querySelector('.help-btn');
 const helpModal = document.getElementById('help-modal');
 const closeBtn = document.querySelector('.close');
 
-helpBtn.addEventListener('click', () => {
-    helpModal.style.display = 'block';
-});
+if (helpBtn && helpModal && closeBtn) {
+    helpBtn.addEventListener('click', () => {
+        helpModal.style.display = 'block';
+    });
 
-closeBtn.addEventListener('click', () => {
-    helpModal.style.display = 'none';
-});
-
-window.addEventListener('click', (e) => {
-    if (e.target === helpModal) {
+    closeBtn.addEventListener('click', () => {
         helpModal.style.display = 'none';
-    }
-});
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === helpModal) {
+            helpModal.style.display = 'none';
+        }
+    });
+}
 
 // Fullscreen
-const fullscreenBtn = document.getElementById('fullscreen-btn');
-fullscreenBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-    } else {
-        document.exitFullscreen();
-    }
-});
+const fullscreenBtn = document.querySelector('.fullscreen-btn');
+if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        } else {
+            document.exitFullscreen();
+        }
+    });
+}
 
 // Record Button
-const recordBtn = document.getElementById('record-btn');
-let isRecording = false;
-
-recordBtn.addEventListener('click', () => {
-    isRecording = !isRecording;
-    recordBtn.classList.toggle('active');
-    
-    if (isRecording) {
-        // Start recording
-        recordBtn.innerHTML = '<i class="fas fa-stop"></i> עצור הקלטה';
-        startRecording();
-    } else {
-        // Stop recording
-        recordBtn.innerHTML = '<i class="fas fa-record-vinyl"></i> הקלטה';
-        stopRecording();
-    }
-});
+const recordBtn = document.querySelector('.record-btn');
+if (recordBtn) {
+    recordBtn.addEventListener('click', () => {
+        alert('יכולת הקלטה תהיה זמינה בגרסה הבאה!');
+    });
+}
 
 // Update Theme
 function updateTheme() {

@@ -73,6 +73,74 @@ h1 {
     right: 0;
 }
 
+/* RTL Support */
+[dir="rtl"] .controls-panel {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+}
+
+[dir="rtl"] .controls-panel.active {
+    transform: translateX(0);
+}
+
+[dir="rtl"] .toggle-controls {
+    right: 20px;
+    left: auto;
+}
+
+[dir="rtl"] .help-btn,
+[dir="rtl"] .fullscreen-btn,
+[dir="rtl"] .record-btn {
+    right: 20px;
+    left: auto;
+}
+
+[dir="rtl"] .help-btn {
+    top: 20px;
+}
+
+[dir="rtl"] .fullscreen-btn {
+    top: 60px;
+}
+
+[dir="rtl"] .record-btn {
+    top: 100px;
+}
+
+[dir="rtl"] .modal-content {
+    right: 50%;
+    left: auto;
+    transform: translate(50%, -50%);
+}
+
+[dir="rtl"] .close {
+    right: 10px;
+    left: auto;
+}
+
+[dir="rtl"] .button-group {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .tab-btn {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+[dir="rtl"] .control-group label {
+    text-align: right;
+}
+
+[dir="rtl"] .checkbox-label {
+    flex-direction: row-reverse;
+}
+
+[dir="rtl"] .checkbox-label input[type="checkbox"] {
+    margin-right: 0;
+    margin-left: 8px;
+}
+
 /* Tabs */
 .tabs {
     display: flex;
